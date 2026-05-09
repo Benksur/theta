@@ -1,3 +1,4 @@
 example_glfw_opengl3
 *.o
 *.ini
+.vscode/
