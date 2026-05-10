@@ -48,7 +48,7 @@ int main(int, char **) {
   if (!glfwInit())
     return 1;
 
-  // Decide GL+GLSL versions
+    // Decide GL+GLSL versions
 #if defined(IMGUI_IMPL_OPENGL_ES2)
   // GL ES 2.0 + GLSL 100 (WebGL 1.0)
   const char *glsl_version = "#version 100";
@@ -149,7 +149,6 @@ int main(int, char **) {
   // IM_ASSERT(font != nullptr);
 
   // Our state
-  bool show_demo_window = true;
   bool show_another_window = false;
   ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
@@ -164,6 +163,13 @@ int main(int, char **) {
   while (!glfwWindowShouldClose(window))
 #endif
   {
+
+    // circuit loop
+    float samples[100];
+    for (int n = 0; n < 100; n++) {
+      samples[n] = sinf(n * 0.2f + ImGui::GetTime() * 1.5f);
+    }
+
     glfwPollEvents();
     if (glfwGetWindowAttrib(window, GLFW_ICONIFIED) != 0) {
       ImGui_ImplGlfw_Sleep(10);
@@ -178,11 +184,13 @@ int main(int, char **) {
       static float f = 0.0f;
       static int counter = 0;
 
+      ImGui::SetNextWindowSize(ImVec2(800, 500));
       ImGui::Begin("Hello, world!", NULL,
                    ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
-
+      ImGui::SetCursorPosX(ImGui::GetWindowSize().x / 2 -
+                           ImGui::CalcTextSize("This is some usefule text.").x /
+                               2);
       ImGui::Text("This is some useful text.");
-      ImGui::Checkbox("Demo Window", &show_demo_window);
 
       ImGui::Checkbox("Another Window", &show_another_window);
 
@@ -194,10 +202,6 @@ int main(int, char **) {
       ImGui::SameLine();
       ImGui::Text("counter = %d", counter);
 
-      float samples[100];
-      for (int n = 0; n < 100; n++) {
-        samples[n] = sinf(n * 0.2f + ImGui::GetTime() * 1.5f);
-      }
       ImGui::PlotLines("Samples", samples, 100, 0, NULL, FLT_MAX, FLT_MAX,
                        ImVec2(600, 200));
       ImGui::End();
