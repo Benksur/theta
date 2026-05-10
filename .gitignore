@@ -2,3 +2,4 @@ example_glfw_opengl3
 *.o
 *.ini
 .vscode/
+compile_commands.json
